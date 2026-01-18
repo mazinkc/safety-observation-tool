@@ -1,13 +1,29 @@
+// Auto-fill today's date when page loads
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
 
-  document.getElementById("date").value = `${yyyy}-${mm}-${dd}`;
+  const dateInput = document.getElementById("date");
+  if (dateInput) {
+    dateInput.value = `${yyyy}-${mm}-${dd}`;
+  }
 });
 
 function copyObservation() {
+  // Get / remember officer name
+  let officerName = localStorage.getItem("officerName");
+  if (!officerName) {
+    officerName = prompt("Enter your name / employee ID");
+    if (!officerName) {
+      alert("Name is required");
+      return;
+    }
+    localStorage.setItem("officerName", officerName);
+  }
+
+  // Collect form data
   const observation = {
     date: document.getElementById("date").value,
     title: document.getElementById("title").value,
@@ -15,30 +31,21 @@ function copyObservation() {
     standard: document.getElementById("standard").value,
     location: document.getElementById("location").value,
     action: document.getElementById("action").value,
-    reportedBy: prompt("Enter your name / employee id")
+    reportedBy: officerName
   };
 
-  // Google Apps Script Web App URL
+  // 🔴 IMPORTANT: USE ONLY script.googleusercontent.com URL
   const apiUrl =
-    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLhiQv_eosX_JRU8gKUIP6jms11x0odQOlei_s-K2gEaJL_C5EE2i_6DEoeYThn51lKdgjVQXURMGCPA-MLslglx2iiF_-UHT9wLtg1gjY9Eskl8VJybqPXw0W7S_qJR5ZpNEiZV8uj2U6LiL2K3Bh7-MQysGwdAPkPitMhPWVulyCkjztLAEPj1ZlVOBzHHd5r_eIKwN1R4odADWq5-aoR1w7Asy-GJTBkuKl9mmvT4prQeYXATqbEHfv5efaAaydMD0BBl2Ex2tkoN59Ww-K2WaAlPEw&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
+    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgIRp-Kov3y8APSI5f-LMwww0YAA9VM3D4b0vuTogxm0fuWw8pawufepOIs7Xtt8cHvj3ZKVYl2ZHWkDA4Ek9286shPdS8SLqITPb_MXMUmId-n5Fn5kgdzToyoKXBugtzhYqt6oSt58MOYIPfo_322y4KONxA3Daz1XyZjT006EfjEm4vd0e1BxJFo3m-LIJVTE9h9YpxVNWOXggYUFy9Eait3DjysmjopDmR72cl05zC0ioKolabQPclbAeGwcs7qklRCoNtfn_uWFTyzGoyP6eBRPg&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
 
-  // Send data to Google Sheet
+  // Send data to Google Sheet (no-cors is REQUIRED)
   fetch(apiUrl, {
     method: "POST",
-    body: JSON.stringify(observation),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-    .then(() => {
-      console.log("Observation saved to central sheet");
-    })
-    .catch(err => {
-      console.error("Error saving observation", err);
-      alert("Error saving observation. Check internet.");
-    });
+    mode: "no-cors",
+    body: JSON.stringify(observation)
+  });
 
-  // Copy formatted text
+  // Format text for WhatsApp / Outlook
   const text = `
 🦺 Daily Safety Observation
 
@@ -57,7 +64,8 @@ ${observation.action}
 👤 Reported By: ${observation.reportedBy}
 `.trim();
 
+  // Copy to clipboard
   navigator.clipboard.writeText(text);
 
-  alert("Observation saved centrally and copied successfully.");
+  alert("✅ Observation submitted and copied successfully.");
 }
