@@ -9,12 +9,13 @@ import {
 
 // 🔴 REPLACE WITH YOUR FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "XXXXXXX",
-  appId: "XXXXXXX"
+  apiKey: "AIzaSyDwNs24S-EiHfl58QCi09EpmPfs8zcyC7E",
+  authDomain: "safety-observation-hse.firebaseapp.com",
+  projectId: "safety-observation-hse",
+  storageBucket: "safety-observation-hse.firebasestorage.app",
+  messagingSenderId: "642311298981",
+  appId: "1:642311298981:web:2bc4b6951eae2f7678d24c"
+};
 };
 
 // Init Firebase
