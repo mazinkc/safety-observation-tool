@@ -8,31 +8,39 @@
 <body>
   <div class="container">
     <h2>Daily Safety Observation</h2>
+<h2>Daily Safety Observation</h2>
 
-    <label>Observation Title</label>
-    <input type="text" id="title" placeholder="Enter observation title" />
+<label>Date</label>
+<input type="date" id="date" readonly />
 
-    <label>Safety Standard</label>
-    <select id="standard">
-      <option value="">Select Standard</option>
-      <option>Working at Height</option>
-      <option>LOTO / Isolation</option>
-      <option>Vehicles & Driving</option>
-      <option>Electrical Safety</option>
-      <option>Confined Space</option>
-      <option>Lifting Operations</option>
-      <option>Machine Guarding</option>
-    </select>
+<label>Observation Title</label>
+<input type="text" id="title" placeholder="Enter observation title" />
 
-    <label>Location</label>
-    <input type="text" id="location" placeholder="Area / Department" />
+<label>Observation Description</label>
+<textarea id="description" placeholder="Describe what was observed"></textarea>
 
-    <label>Actions Taken</label>
-    <textarea id="action"></textarea>
+<label>Safety Standard</label>
+<select id="standard">
+  <option value="">Select Standard</option>
+  <option>Working at Height</option>
+  <option>LOTO / Isolation</option>
+  <option>Vehicles & Driving</option>
+  <option>Electrical Safety</option>
+  <option>Confined Space</option>
+  <option>Lifting Operations</option>
+  <option>Machine Guarding</option>
+</select>
 
-    <button onclick="copyObservation()">📋 Copy</button>
+<label>Location</label>
+<input type="text" id="location" placeholder="Area / Department" />
 
-    <textarea id="output" readonly></textarea>
+<label>Actions Taken</label>
+<textarea id="action" placeholder="Immediate / corrective action taken"></textarea>
+
+<button onclick="copyObservation()">📋 Copy</button>
+
+<textarea id="output" readonly></textarea>
+
   </div>
 
   <script src="app.js"></script>
