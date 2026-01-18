@@ -1,47 +1,53 @@
-// Run after HTML is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
-
-  // Set date in YYYY-MM-DD format
-  const dateInput = document.getElementById("date");
-  if (dateInput) {
-    dateInput.value = `${yyyy}-${mm}-${dd}`;
-  }
+  document.getElementById("date").value = `${yyyy}-${mm}-${dd}`;
 });
 
-function copyObservation() {
-  const date = document.getElementById("date").value;
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const standard = document.getElementById("standard").value;
-  const location = document.getElementById("location").value;
-  const action = document.getElementById("action").value;
+// Save observation to local storage
+function saveObservation(data) {
+  let observations = JSON.parse(localStorage.getItem("observations")) || [];
+  observations.push(data);
+  localStorage.setItem("observations", JSON.stringify(observations));
+}
 
-  const formattedText = `
+function copyObservation() {
+  const observation = {
+    date: document.getElementById("date").value,
+    title: document.getElementById("title").value,
+    description: document.getElementById("description").value,
+    standard: document.getElementById("standard").value,
+    location: document.getElementById("location").value,
+    action: document.getElementById("action").value,
+    timestamp: new Date().toISOString()
+  };
+
+  const text = `
 🦺 Daily Safety Observation
 
-📅 Date: ${date}
-📝 Title: ${title}
+📅 Date: ${observation.date}
+📝 Title: ${observation.title}
 
-👀 Observation Description:
-${description}
+👀 Observation:
+${observation.description}
 
-📘 Safety Standard: ${standard}
-📍 Location: ${location}
+📘 Standard: ${observation.standard}
+📍 Location: ${observation.location}
 
 ✅ Action Taken:
-${action}
+${observation.action}
 `.trim();
 
-  const output = document.getElementById("output");
-  output.value = formattedText;
+  // Save locally
+  saveObservation(observation);
 
+  // Copy
+  const output = document.getElementById("output");
+  output.value = text;
   output.select();
-  output.setSelectionRange(0, 99999); // For mobile
   navigator.clipboard.writeText(output.value);
 
-  alert("Observation copied! Paste directly into WhatsApp or Outlook.");
+  alert("Observation saved & copied successfully.");
 }
