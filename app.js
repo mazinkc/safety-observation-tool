@@ -1,8 +1,16 @@
-// Auto-fill today's date
-window.onload = function () {
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("date").value = today;
-};
+// Run after HTML is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+
+  // Set date in YYYY-MM-DD format
+  const dateInput = document.getElementById("date");
+  if (dateInput) {
+    dateInput.value = `${yyyy}-${mm}-${dd}`;
+  }
+});
 
 function copyObservation() {
   const date = document.getElementById("date").value;
@@ -12,27 +20,28 @@ function copyObservation() {
   const location = document.getElementById("location").value;
   const action = document.getElementById("action").value;
 
-  const text = `
+  const formattedText = `
 🦺 Daily Safety Observation
 
 📅 Date: ${date}
 📝 Title: ${title}
 
-👀 Observation:
+👀 Observation Description:
 ${description}
 
-📘 Standard: ${standard}
+📘 Safety Standard: ${standard}
 📍 Location: ${location}
 
 ✅ Action Taken:
 ${action}
-`;
+`.trim();
 
   const output = document.getElementById("output");
-  output.value = text.trim();
+  output.value = formattedText;
 
   output.select();
+  output.setSelectionRange(0, 99999); // For mobile
   navigator.clipboard.writeText(output.value);
 
-  alert("Copied! Paste in WhatsApp or Outlook.");
+  alert("Observation copied! Paste directly into WhatsApp or Outlook.");
 }
