@@ -1,29 +1,42 @@
-// Auto-fill today's date when page loads
-document.addEventListener("DOMContentLoaded", function () {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const dd = String(today.getDate()).padStart(2, "0");
+// 🔥 Firebase v9+ (ES Module)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-  const dateInput = document.getElementById("date");
-  if (dateInput) {
-    dateInput.value = `${yyyy}-${mm}-${dd}`;
-  }
+// 🔴 REPLACE WITH YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "XXXXXXX",
+  appId: "XXXXXXX"
+};
+
+// Init Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Auto-fill today's date
+document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("date").value = today;
 });
 
-function copyObservation() {
-  // Get / remember officer name
+// MAIN FUNCTION
+window.copyObservation = async function () {
+  // Officer name (stored locally)
   let officerName = localStorage.getItem("officerName");
   if (!officerName) {
     officerName = prompt("Enter your name / employee ID");
-    if (!officerName) {
-      alert("Name is required");
-      return;
-    }
+    if (!officerName) return alert("Name required");
     localStorage.setItem("officerName", officerName);
   }
 
-  // Collect form data
   const observation = {
     date: document.getElementById("date").value,
     title: document.getElementById("title").value,
@@ -31,21 +44,20 @@ function copyObservation() {
     standard: document.getElementById("standard").value,
     location: document.getElementById("location").value,
     action: document.getElementById("action").value,
-    reportedBy: officerName
+    reportedBy: officerName,
+    createdAt: serverTimestamp()
   };
 
-  // 🔴 IMPORTANT: USE ONLY script.googleusercontent.com URL
-  const apiUrl =
-    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLhMpcAWR4JK9l5xMmgjtS5MGBtVDHrDOAcuPdFwCWrTVxGe_UiI9JAB7HRqRADD1wJvPfYJFZH5eAZSgDeSMt2XcFx9MhgxqWDzZgLYIrzZ-IXEr5VDcItGcyO3TB6DoEB3ivudGxxYzPld_oOA3D35Qn8vMh3kgH1t2mJuGEDkqBtZitp1OfQKEfIhuyNlPERowxNAdeYtKpa83SjOMMeJSsgpBqcgJ2LvH-GnPytp0Ay3BD2VIbsU4cM6VKNyupCir7u998h8M6vMXi_iMJFz_1alfg&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
+  try {
+    await addDoc(collection(db, "observations"), observation);
+    alert("✅ Observation saved successfully");
+  } catch (err) {
+    console.error(err);
+    alert("❌ Failed to save observation");
+    return;
+  }
 
-  // Send data to Google Sheet (no-cors is REQUIRED)
-  fetch(apiUrl, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify(observation)
-  });
-
-  // Format text for WhatsApp / Outlook
+  // Copy formatted text
   const text = `
 🦺 Daily Safety Observation
 
@@ -64,8 +76,5 @@ ${observation.action}
 👤 Reported By: ${observation.reportedBy}
 `.trim();
 
-  // Copy to clipboard
   navigator.clipboard.writeText(text);
-
-  alert("✅ Observation submitted and copied successfully.");
-}
+};
