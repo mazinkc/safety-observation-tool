@@ -36,7 +36,7 @@ function copyObservation() {
 
   // 🔴 IMPORTANT: USE ONLY script.googleusercontent.com URL
   const apiUrl =
-    "https://script.google.com/macros/s/AKfycbxv8YGW4Ic0DiKtm0fQIjLVi3cYO6wLtuHE7oYUXn7G3eAmXh2ifMVvrM1lGDecJjmj/exec";
+    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjKLYE1VChanfm77AkXqYXsb94mEQTifKIYfSky97wo_srfxbBgOPwpmytAM5l_CSf0o8hXSaK-huLF-fJ8JdKhcFTgWxJPzwBCYN6s01SynWAgQih7ckHJNKr1oHrnTusSEiGUrvssnynPxuWMAU3lxSLEN2Qn-Xy_fxsSPyAbdslwNEv_f7Fn9axh6kTKwM7WYitNHEAhb7baeqbDZJKBXdqFC_L2_xxs-BScrlotQ4nbc-NrZ1nwpTXIjH-gIIfc8bnW4Wokd5JgOaHNKNUMK8phiA&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
 
   // Send data to Google Sheet (no-cors is REQUIRED)
   fetch(apiUrl, {
