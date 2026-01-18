@@ -1,4 +1,4 @@
-// 🔥 Firebase v9+ (ES Module)
+// 🔥 Firebase (ES Module)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
   getFirestore,
@@ -7,7 +7,7 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// 🔴 REPLACE WITH YOUR FIREBASE CONFIG
+// ✅ YOUR FIREBASE CONFIG (AS PROVIDED)
 const firebaseConfig = {
   apiKey: "AIzaSyDwNs24S-EiHfl58QCi09EpmPfs8zcyC7E",
   authDomain: "safety-observation-hse.firebaseapp.com",
@@ -16,28 +16,32 @@ const firebaseConfig = {
   messagingSenderId: "642311298981",
   appId: "1:642311298981:web:2bc4b6951eae2f7678d24c"
 };
-};
 
-// Init Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Auto-fill today's date
 document.addEventListener("DOMContentLoaded", () => {
   const today = new Date().toISOString().split("T")[0];
-  document.getElementById("date").value = today;
+  const dateInput = document.getElementById("date");
+  if (dateInput) dateInput.value = today;
 });
 
 // MAIN FUNCTION
-window.copyObservation = async function () {
+async function copyObservation() {
   // Officer name (stored locally)
   let officerName = localStorage.getItem("officerName");
   if (!officerName) {
     officerName = prompt("Enter your name / employee ID");
-    if (!officerName) return alert("Name required");
+    if (!officerName) {
+      alert("Name is required");
+      return;
+    }
     localStorage.setItem("officerName", officerName);
   }
 
+  // Collect form data
   const observation = {
     date: document.getElementById("date").value,
     title: document.getElementById("title").value,
@@ -50,16 +54,11 @@ window.copyObservation = async function () {
   };
 
   try {
+    // Save to Firestore
     await addDoc(collection(db, "observations"), observation);
-    alert("✅ Observation saved successfully");
-  } catch (err) {
-    console.error(err);
-    alert("❌ Failed to save observation");
-    return;
-  }
 
-  // Copy formatted text
-  const text = `
+    // Copy formatted text
+    const text = `
 🦺 Daily Safety Observation
 
 📅 Date: ${observation.date}
@@ -77,5 +76,15 @@ ${observation.action}
 👤 Reported By: ${observation.reportedBy}
 `.trim();
 
-  navigator.clipboard.writeText(text);
-};
+    await navigator.clipboard.writeText(text);
+
+    alert("✅ Observation saved and copied successfully");
+
+  } catch (error) {
+    console.error(error);
+    alert("❌ Failed to save observation");
+  }
+}
+
+// 🔴 REQUIRED so button onclick works with modules
+window.copyObservation = copyObservation;
