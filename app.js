@@ -3,15 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
+
   document.getElementById("date").value = `${yyyy}-${mm}-${dd}`;
 });
-
-// Save observation to local storage
-function saveObservation(data) {
-  let observations = JSON.parse(localStorage.getItem("observations")) || [];
-  observations.push(data);
-  localStorage.setItem("observations", JSON.stringify(observations));
-}
 
 function copyObservation() {
   const observation = {
@@ -21,9 +15,30 @@ function copyObservation() {
     standard: document.getElementById("standard").value,
     location: document.getElementById("location").value,
     action: document.getElementById("action").value,
-    timestamp: new Date().toISOString()
+    reportedBy: prompt("Enter your name / employee id")
   };
 
+  // Google Apps Script Web App URL
+  const apiUrl =
+    "https://script.google.com/macros/s/AKfycbwY7N5P2o3vwi6OEYYp2aTCAJtC6qZVH1tpOfqge4kjlE0sic9fniDu71GjOC66GvHC/exec";
+
+  // Send data to Google Sheet
+  fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify(observation),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(() => {
+      console.log("Observation saved to central sheet");
+    })
+    .catch(err => {
+      console.error("Error saving observation", err);
+      alert("Error saving observation. Check internet.");
+    });
+
+  // Copy formatted text
   const text = `
 🦺 Daily Safety Observation
 
@@ -33,21 +48,16 @@ function copyObservation() {
 👀 Observation:
 ${observation.description}
 
-📘 Standard: ${observation.standard}
+📘 Safety Standard: ${observation.standard}
 📍 Location: ${observation.location}
 
 ✅ Action Taken:
 ${observation.action}
+
+👤 Reported By: ${observation.reportedBy}
 `.trim();
 
-  // Save locally
-  saveObservation(observation);
+  navigator.clipboard.writeText(text);
 
-  // Copy
-  const output = document.getElementById("output");
-  output.value = text;
-  output.select();
-  navigator.clipboard.writeText(output.value);
-
-  alert("Observation saved & copied successfully.");
+  alert("Observation saved centrally and copied successfully.");
 }
