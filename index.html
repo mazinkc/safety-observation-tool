@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daily Safety Observation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Daily Safety Observation</h2>
+
+    <label>Observation Title</label>
+    <input type="text" id="title" placeholder="Enter observation title" />
+
+    <label>Safety Standard</label>
+    <select id="standard">
+      <option value="">Select Standard</option>
+      <option>Working at Height</option>
+      <option>LOTO / Isolation</option>
+      <option>Vehicles & Driving</option>
+      <option>Electrical Safety</option>
+      <option>Confined Space</option>
+      <option>Lifting Operations</option>
+      <option>Machine Guarding</option>
+    </select>
+
+    <label>Location</label>
+    <input type="text" id="location" placeholder="Area / Department" />
+
+    <label>Actions Taken</label>
+    <textarea id="action"></textarea>
+
+    <button onclick="copyObservation()">📋 Copy</button>
+
+    <textarea id="output" readonly></textarea>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
