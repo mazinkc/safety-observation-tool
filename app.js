@@ -20,7 +20,7 @@ function copyObservation() {
 
   // Google Apps Script Web App URL
   const apiUrl =
-    "https://script.google.com/macros/s/AKfycbzwJkvrUaHgXUhkTDA-oZ5cap0uNSdV2Zpwg0RXchkg41Puy7iniy06ki_ql67lbNs8/exec";
+    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLhiQv_eosX_JRU8gKUIP6jms11x0odQOlei_s-K2gEaJL_C5EE2i_6DEoeYThn51lKdgjVQXURMGCPA-MLslglx2iiF_-UHT9wLtg1gjY9Eskl8VJybqPXw0W7S_qJR5ZpNEiZV8uj2U6LiL2K3Bh7-MQysGwdAPkPitMhPWVulyCkjztLAEPj1ZlVOBzHHd5r_eIKwN1R4odADWq5-aoR1w7Asy-GJTBkuKl9mmvT4prQeYXATqbEHfv5efaAaydMD0BBl2Ex2tkoN59Ww-K2WaAlPEw&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
 
   // Send data to Google Sheet
   fetch(apiUrl, {
