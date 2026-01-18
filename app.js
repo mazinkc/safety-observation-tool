@@ -36,7 +36,7 @@ function copyObservation() {
 
   // 🔴 IMPORTANT: USE ONLY script.googleusercontent.com URL
   const apiUrl =
-    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjKLYE1VChanfm77AkXqYXsb94mEQTifKIYfSky97wo_srfxbBgOPwpmytAM5l_CSf0o8hXSaK-huLF-fJ8JdKhcFTgWxJPzwBCYN6s01SynWAgQih7ckHJNKr1oHrnTusSEiGUrvssnynPxuWMAU3lxSLEN2Qn-Xy_fxsSPyAbdslwNEv_f7Fn9axh6kTKwM7WYitNHEAhb7baeqbDZJKBXdqFC_L2_xxs-BScrlotQ4nbc-NrZ1nwpTXIjH-gIIfc8bnW4Wokd5JgOaHNKNUMK8phiA&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
+    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjIBXbDbYzp31q9MAMKnaohqikJC_aXyFD_F76OvNnac43zYgRBsrhZvX2J6TdzpeT9tqVVpIcaNHRo2w2MUIzR54rGJ6PrEIv1jTDAQgQXEh8CqEO2TtAkhlrIxZ6mgPcDcOOzbrNKTaP0yQnLu-xm6IGqZid4yT1Ur3vsgnb-Or6yioQSXe8DWPtQrQqZ277U2RRir7VKRigKtSYQnLoPDFM3IzxrH1EIR33enFxjP90mRM5HFKy13qavvQ65wsje-TOkO3X7TS9P9yV5vsrFXTH-hA&lib=MKb_swMMWnJwt6aPDKhB61oNgOsbLQx5W";
 
   // Send data to Google Sheet (no-cors is REQUIRED)
   fetch(apiUrl, {
